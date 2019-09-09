@@ -1,14 +1,21 @@
 // Bygg upp webbsidorna
 ByggMenySida();
 ByggInloggadSida();
+console.log(localStorage);
 
-// är personen redan inloggad?
-if (9===9)
-{    
+// om namnet finns i localStorage ska det visas
+var namn = "";
+namn = window.localStorage.getItem("MVP_Inloggning_namn");
+console.log("inläst data: " + namn);
+
+if (namn)
+{
+    console.log("namn fanns i localStorage");
     VisaInloggad();
 }
 else
 {
+    console.log("namn fanns inte i localStorage");
     VisaMeny();
 }
 
@@ -20,12 +27,36 @@ let LoggautBtnKlick = document.getElementById("btnLoggaUt");
 // händelsehantering: klickat logga in-knappen
 LoggainBtnKlick.addEventListener("click", function() 
 {
+    var namn = "test";
+    var password = "1234";
+
+    // kontroll av inloggning
+    if (namn==="test" && password==="1234")
+    {        
+    // spar i localStorage
+    localStorage.setItem("MVP_Inloggning_namn",namn);
+    localStorage.setItem("MVP_Inloggning_password",password);
+    console.log(localStorage);
+
+    // skifta till sidan för inloggad person
     VisaInloggad();
+    }
+    else
+    {
+        //visa felsidan
+
+    }
 })
 
 // händelsehantering: klickat logga ut-knappen 
 LoggautBtnKlick.addEventListener("click", function() 
 {
+    // tömmer local storage på detta programs data
+    localStorage.removeItem("MVP_Inloggning_namn");
+    localStorage.removeItem("MVP_Inloggning_password");
+    console.log(localStorage);
+    
+    // skifta till meny-sidan
     VisaMeny();
 })
 
@@ -38,7 +69,7 @@ function VisaMeny()
 
     // rubrik
     document.getElementById("rubrikId").innerText = 
-                "logga in för att komma vidare";
+                "Logga in för att komma vidare";
 
     // göm utloggnings-knappen
     var knappen = document.getElementById("divLoggaUtId");
@@ -51,16 +82,16 @@ function VisaMeny()
     knappen.setAttribute("display","true"); 
 }
 
-// funktion: visa sida för inloggad person
+// funktion: visa välkommen-sidan
 function VisaInloggad()
 {
-    // används för att förkorta kod-raderna: 
-    var kodText;
-    var knappen; 
-
     // rubrik
     document.getElementById("rubrikId").innerText = 
                 "Välkommen, du är inloggad";
+
+    // används för att förkorta kod-raderna: 
+    var kodText;
+    var knappen;                
 
     // göm logga in-knappen  
     knappen = document.getElementById("divMenyId"); 
