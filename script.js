@@ -1,147 +1,187 @@
-// Bygg upp webbsidorna
-ByggMenySida();
-ByggInloggadSida();
-console.log(localStorage);
-
+   
 // om namnet finns i localStorage ska det visas
 var namn = "";
 namn = window.localStorage.getItem("MVP_Inloggning_namn");
-console.log("inläst data: " + namn);
 
-if (namn)
-{
-    console.log("namn fanns i localStorage");
-    VisaInloggad();
-}
-else
-{
-    console.log("namn fanns inte i localStorage");
-    VisaMeny();
-}
-
-// event-triggers, måste ligga här för att "synas" överallt
-let LoggainBtnKlick = document.getElementById("btnLoggaIn");
-let LoggautBtnKlick = document.getElementById("btnLoggaUt");
-
-
-// händelsehantering: klickat logga in-knappen
-LoggainBtnKlick.addEventListener("click", function() 
-{
-    var namn = "test";
-    var password = "1234";
-
-    // kontroll av inloggning
-    if (namn==="test" && password==="1234")
-    {        
-    // spar i localStorage
-    localStorage.setItem("MVP_Inloggning_namn",namn);
-    localStorage.setItem("MVP_Inloggning_password",password);
-    console.log(localStorage);
-
-    // skifta till sidan för inloggad person
-    VisaInloggad();
+    if (namn)
+    {
+        ByggInloggadSida(namn);
     }
     else
     {
-        //visa felsidan
-
+        ByggMenySida();
     }
-})
 
-// händelsehantering: klickat logga ut-knappen 
-LoggautBtnKlick.addEventListener("click", function() 
-{
-    // tömmer local storage på detta programs data
-    localStorage.removeItem("MVP_Inloggning_namn");
-    localStorage.removeItem("MVP_Inloggning_password");
-    console.log(localStorage);
-    
-    // skifta till meny-sidan
-    VisaMeny();
-})
-
-// funktion: visa meny-sidan
-function VisaMeny()
-{
-    // används för att förkorta kod-raderna: 
-    var kodText;
-    var knappen; 
-
-    // rubrik
-    document.getElementById("rubrikId").innerText = 
-                "Logga in för att komma vidare";
-
-    // göm utloggnings-knappen
-    var knappen = document.getElementById("divLoggaUtId");
-    knappen.removeAttribute("display");
-    knappen.setAttribute("hidden","true"); 
-
-    // visa logga in-knappen (ta bort non-display)
-    knappen = document.getElementById("divMenyId");
-    knappen.removeAttribute("hidden");
-    knappen.setAttribute("display","true"); 
-}
-
-// funktion: visa välkommen-sidan
-function VisaInloggad()
-{
-    // rubrik
-    document.getElementById("rubrikId").innerText = 
-                "Välkommen, du är inloggad";
-
-    // används för att förkorta kod-raderna: 
-    var kodText;
-    var knappen;                
-
-    // göm logga in-knappen  
-    knappen = document.getElementById("divMenyId"); 
-    knappen.removeAttribute("display");
-    knappen.setAttribute("hidden","true"); 
-
-    // visa utloggnings-knappen (ta bort non-display)
-    knappen = document.getElementById("divLoggaUtId");
-    knappen.removeAttribute("hidden");
-    knappen.setAttribute("display","true"); 
-}
-
-// funktion: bygger upp första div-taggen
 function ByggMenySida()
-{
+{  
     // används för att förkorta kod-raderna: 
-    var kodText;
-    var knappen; 
+    var kodText;    
+    var taggInUse;   
 
-    // div-tagg
-    kodText = "<div id='divMenyId'></div>";
-    document.body.insertAdjacentHTML("beforeend",kodText);
+    // ta bort ev tidigare utskrift
+    taggInUse = document.getElementById("helaSidan");
+    taggInUse.innerHTML = "";
+
+    // start-tagg som kopplas till första taggen i html-dokumentet
+    kodText = "<div id='wrap'></div>";
+    taggInUse = document.getElementById("helaSidan");
+    taggInUse.insertAdjacentHTML("beforeend",kodText);
+
+    // min rubrikrad
+    kodText = "<h2 id='rubrik'>Meny</h2>";
+    taggInUse = document.getElementById("wrap");
+    taggInUse.insertAdjacentHTML("beforeend",kodText);
+ 
+    // min detaljrad
+    kodText = "<div id='divMenyId'>Ange lösenord</div>";
+    taggInUse = document.getElementById("wrap");
+    taggInUse.insertAdjacentHTML("beforeend",kodText);
+
+    // namn-tagg
+    kodText = "<input id='indataNamnId' type='text'></input>";
+    taggInUse = document.getElementById("divMenyId");
+    taggInUse.insertAdjacentHTML("beforeend", kodText);
+
+    // password-tagg
+    kodText = "<input id='indataPasswordId' type='password'></input>";
+    taggInUse = document.getElementById("divMenyId");
+    taggInUse.insertAdjacentHTML("beforeend", kodText);
 
     // inloggningsknappen
     kodText = "<button id='btnLoggaIn'> Logga in </button>";
-    knappen = document.getElementById("divMenyId");
-    knappen.insertAdjacentHTML("beforeend", kodText)
+    taggInUse = document.getElementById("divMenyId");
+    taggInUse.insertAdjacentHTML("beforeend", kodText);
 
-    knappen.setAttribute("display","true"); 
+    // variabel som fångar upp val från skärmen
+    var variabelLoggaIn = document.getElementById("btnLoggaIn");
+    
+    // händelsehantering: klickat logga in-knappen
+    variabelLoggaIn.addEventListener("click", function()
+    {
+        LoggainBtnKlick();
+    })
+        
+    // händelsehantering: klickat logga in-knappen
+    function LoggainBtnKlick()
+    {
+        var namn = document.getElementById("indataNamnId").value;
+        var password = document.getElementById("indataPasswordId").value;
+        var hardcodeName = "test";
+        var hardcodePass = "1234";
+            
+        // kontroll av inloggning
+        if (namn === hardcodeName && password === hardcodePass)
+        {   
+            // spar i localStorage
+            localStorage.setItem("MVP_Inloggning_namn",namn);
+            localStorage.setItem("MVP_Inloggning_password",password);
+            
+            // skifta till sidan för inloggad person
+            ByggInloggadSida(namn);
+        }
+        else
+        {
+            //visa felsidan
+            ByggFelSida(namn);
+        }
+    }
 }
 
-function ByggInloggadSida()
+function ByggFelSida(namn)
 {
-    // används för att förkorta kod-raderna: 
-    var kodText;
-    var knappen; 
+    // ta bort ev tidigare utskrift
+    taggInUse = document.getElementById("helaSidan");
+    taggInUse.innerHTML = "";
 
-    // div-tagg
+    // start-tagg som kopplas till första taggen i html-dokumentet
+    kodText = "<div id='wrap'></div>";
+    taggInUse = document.getElementById("helaSidan");
+    taggInUse.insertAdjacentHTML("beforeend",kodText);
+
+    // min rubrikrad
+    kodText = "<h2 id='rubrik'>Det blev fel</h2>";
+    taggInUse = document.getElementById("wrap");
+    taggInUse.insertAdjacentHTML("beforeend",kodText);
+
+    // min detaljrad
+    kodText = "<div id='divFelId'>Användarid och/eller password är felaktigt</div>";
+    taggInUse = document.getElementById("wrap");
+    taggInUse.insertAdjacentHTML("beforeend",kodText);
+    
+    // namn-tagg
+    kodText = "<div id='namnFelId'>Du angav användarid </div>";
+    taggInUse = document.getElementById("divFelId");
+    taggInUse.insertAdjacentHTML("beforeend", kodText);
+
+    taggInUse = document.getElementById("namnFelId");
+    taggInUse.insertAdjacentHTML("beforeend", namn);
+
+    // tillbaka-knappen
+    kodText = "<button id='btnTillbaka'> Tillbaka till inloggning </button>";
+    taggInUse = document.getElementById("wrap");
+    taggInUse.insertAdjacentHTML("beforeend", kodText);
+
+    // variabler som fångar upp val från skärmen
+    var variabelTillbaka = document.getElementById("btnTillbaka");
+
+    // händelsehantering: klickat tillbaka-knappen
+    var variabelTillbaka = document.getElementById("btnTillbaka");
+
+    // event-handler: tillbaka till menyn
+    variabelTillbaka.addEventListener("click", function()
+    {  
+        ByggMenySida();
+    })
+}  
+
+function ByggInloggadSida(namn)
+{
+    // ta bort ev tidigare utskrift
+    taggInUse = document.getElementById("helaSidan");
+    taggInUse.innerHTML = "";
+
+    // start-tagg som kopplas till första taggen i html-dokumentet
+    kodText = "<div id='wrap'></div>";
+    taggInUse = document.getElementById("helaSidan");
+    taggInUse.insertAdjacentHTML("beforeend",kodText);
+
+    // min rubrikrad
+    kodText = "<h2 id='rubrik'>Välkommen in</h2>";
+    taggInUse = document.getElementById("wrap");
+    taggInUse.insertAdjacentHTML("beforeend",kodText);
+
+    // min detaljrad
     kodText = "<div id='divLoggaUtId'></div>";
-    document.body.insertAdjacentHTML("beforeend",kodText);
+    taggInUse = document.getElementById("wrap");
+    taggInUse.insertAdjacentHTML("beforeend",kodText);
+    
+    // namn-tagg
+    kodText = "<div id='namnId'>Du är inloggad som </div>";
+    taggInUse = document.getElementById("divLoggaUtId");
+    taggInUse.insertAdjacentHTML("beforeend", kodText);
 
-    // inloggningsknappen
+    taggInUse = document.getElementById("namnId");
+    taggInUse.insertAdjacentHTML("beforeend", namn);
+
+    // utloggningsknappen
     kodText = "<button id='btnLoggaUt'> Logga ut </button>";
-    knappen = document.getElementById("divLoggaUtId");
-    knappen.insertAdjacentHTML("beforeend", kodText);
+    taggInUse = document.getElementById("wrap");
+    taggInUse.insertAdjacentHTML("beforeend", kodText);
 
-    knappen.setAttribute("hidden","true"); 
- }
+    // variabler som fångar upp val från skärmen
+    var variabelLoggaUt = document.getElementById("btnLoggaUt");
 
-function ByggFelSida()
-{
+    // händelsehantering: klickat logga ut-knappen
+    var variabelLoggaUt = document.getElementById("btnLoggaUt");
 
-}
+    // event-handler: logga ut
+    variabelLoggaUt.addEventListener("click", function()
+    {  
+        // tömmer local storage på detta programs data
+        localStorage.removeItem("MVP_Inloggning_namn");
+        localStorage.removeItem("MVP_Inloggning_password");
+
+        // åter till meny-sidan
+        ByggMenySida();
+    })
+}   
