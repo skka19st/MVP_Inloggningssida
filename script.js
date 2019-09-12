@@ -1,8 +1,6 @@
  
- // börja alltid med en wrap
+// börja alltid med en wrap
 // div-tagg som ska ligga inne i body-taggen
-// 'afterbegin' räknas i förhållande till body-taggen
-// dvs detta ska vara första taggen för body-taggen
 var kodText = "<div id='wrap'></div>";
 document.body.insertAdjacentHTML("afterbegin",kodText);
 
@@ -29,18 +27,18 @@ function ByggMenySida()
     taggInUse = document.getElementById("wrap");
     taggInUse.innerHTML = "";
 
-    // rubrik
+    // rubrik och menysida inne i wrapen
     taggInUse = document.getElementById("wrap");
     kodText = "<h2>Meny</h2>";
-    kodText = kodText + "<div id='meny'></div>";
+    kodText += "<div id='meny'></div>";
     taggInUse.insertAdjacentHTML("beforeend",kodText);
 
     // input för namn och password, logga in-button
     taggInUse = document.getElementById("meny");
     kodText = "<div id='divMenyId'>Ange namn och lösenord</div>";
-    kodText = kodText + "<input id='namnid' type='text'></input>";
-    kodText = kodText + "<input id='pword' type='password'></input>";    
-    kodText = kodText + "<button id='btnLoggaIn'> Logga in </button>";
+    kodText += "<input id='namnid' type='text'></input>";
+    kodText += "<input id='pword' type='password'></input>";  
+    kodText += "<button id='btnLoggaIn'> Logga in </button>";
     taggInUse.insertAdjacentHTML("beforeend", kodText);
    
     // event-handler: logga in
@@ -85,16 +83,11 @@ function ByggFelSida(namn)
     kodText = "<h2>Felaktigt id/lösen</h2>";
     kodText = kodText + "<div id='felsida'></div>";
     taggInUse.insertAdjacentHTML("beforeend",kodText);
-
-    // detaljrad som ska ligga på felsidan
-    taggInUse = document.getElementById("felsida");
-    kodText = "<div id='detaljrad'></div>";
-    taggInUse.insertAdjacentHTML("beforeend",kodText);
     
-    // utdata och tillbaka-button
-    taggInUse = document.getElementById("detaljrad");
-    kodText = "Du angav användarid " + namn;
-    kodText = kodText + "<button id='tillb'> Tillbaka  </button>";
+    // namn och tillbaka-button
+    taggInUse = document.getElementById("felsida");
+    kodText = "Du angav användarid " + namn + "  ";
+    kodText += "<button id='tillb'> Tillbaka  </button>";
     taggInUse.insertAdjacentHTML("beforeend", kodText);
 
     // event-handler: tillbaka till menyn
@@ -115,23 +108,23 @@ function ByggInloggadSida(namn)
     taggInUse = document.getElementById("wrap");
     taggInUse.innerHTML = "";
 
-    // rubrikrad och detaljrad inne i wrapen
+    // rubrikrad och visasida inne i wrapen
     taggInUse = document.getElementById("wrap");
     kodText = "<h2 id='rubrik'>Välkommen in</h2>";
-    kodText = kodText + "<div id='visasida'></div>";
+    kodText += "<div id='visasida'></div>";
     taggInUse.insertAdjacentHTML("beforeend",kodText);
 
-    // namn och logga ut-button på detaljraden
+    // namn och logga ut-button 
     taggInUse = document.getElementById("visasida");
-    kodText = "du är inloggad som " + namn;
-    kodText = kodText + "<button id='btnLoggaUt'> Logga ut </button>";
+    kodText = "du är inloggad som " + namn + "  ";
+    kodText += "<button id='btnLoggaUt'> Logga ut </button>";
     taggInUse.insertAdjacentHTML("beforeend", kodText);
 
     // event-handler: logga ut
     var eventLoggaUt = document.getElementById("btnLoggaUt");
     eventLoggaUt.addEventListener("click", function()
     {  
-        // tömmer local storage på detta programs data
+        // tar bort användarinfo från local storage 
         localStorage.removeItem("MVP_Inloggning_namn");
         localStorage.removeItem("MVP_Inloggning_password");
 
