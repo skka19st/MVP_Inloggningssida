@@ -1,4 +1,11 @@
-   
+ 
+ // börja alltid med en wrap
+// div-tagg som ska ligga inne i body-taggen
+// 'afterbegin' räknas i förhållande till body-taggen
+// dvs detta ska vara första taggen för body-taggen
+var kodText = "<div id='wrap'></div>";
+document.body.insertAdjacentHTML("afterbegin",kodText);
+
 // om namnet finns i localStorage ska det visas
 var namn = "";
 namn = window.localStorage.getItem("MVP_Inloggning_namn");
@@ -19,53 +26,29 @@ function ByggMenySida()
     var taggInUse;   
 
     // ta bort ev tidigare utskrift
-    taggInUse = document.getElementById("helaSidan");
+    taggInUse = document.getElementById("wrap");
     taggInUse.innerHTML = "";
 
-    // start-tagg som kopplas till första taggen i html-dokumentet
-    kodText = "<div id='wrap'></div>";
-    taggInUse = document.getElementById("helaSidan");
-    taggInUse.insertAdjacentHTML("beforeend",kodText);
-
-    // min rubrikrad
-    kodText = "<h2 id='rubrik'>Meny</h2>";
+    // rubrik
     taggInUse = document.getElementById("wrap");
-    taggInUse.insertAdjacentHTML("beforeend",kodText);
- 
-    // min detaljrad
-    kodText = "<div id='divMenyId'>Ange lösenord</div>";
-    taggInUse = document.getElementById("wrap");
+    kodText = "<h2>Meny</h2>";
+    kodText = kodText + "<div id='meny'></div>";
     taggInUse.insertAdjacentHTML("beforeend",kodText);
 
-    // namn-tagg
-    kodText = "<input id='indataNamnId' type='text'></input>";
-    taggInUse = document.getElementById("divMenyId");
+    // input för namn och password, logga in-button
+    taggInUse = document.getElementById("meny");
+    kodText = "<div id='divMenyId'>Ange namn och lösenord</div>";
+    kodText = kodText + "<input id='namnid' type='text'></input>";
+    kodText = kodText + "<input id='pword' type='password'></input>";    
+    kodText = kodText + "<button id='btnLoggaIn'> Logga in </button>";
     taggInUse.insertAdjacentHTML("beforeend", kodText);
-
-    // password-tagg
-    kodText = "<input id='indataPasswordId' type='password'></input>";
-    taggInUse = document.getElementById("divMenyId");
-    taggInUse.insertAdjacentHTML("beforeend", kodText);
-
-    // inloggningsknappen
-    kodText = "<button id='btnLoggaIn'> Logga in </button>";
-    taggInUse = document.getElementById("divMenyId");
-    taggInUse.insertAdjacentHTML("beforeend", kodText);
-
-    // variabel som fångar upp val från skärmen
-    var variabelLoggaIn = document.getElementById("btnLoggaIn");
-    
-    // händelsehantering: klickat logga in-knappen
-    variabelLoggaIn.addEventListener("click", function()
+   
+    // event-handler: logga in
+    var eventLoggaIn = document.getElementById("btnLoggaIn");
+    eventLoggaIn.addEventListener("click", function()
     {
-        LoggainBtnKlick();
-    })
-        
-    // händelsehantering: klickat logga in-knappen
-    function LoggainBtnKlick()
-    {
-        var namn = document.getElementById("indataNamnId").value;
-        var password = document.getElementById("indataPasswordId").value;
+        var namn = document.getElementById("namnid").value;
+        var password = document.getElementById("pword").value;
         var hardcodeName = "test";
         var hardcodePass = "1234";
             
@@ -84,51 +67,39 @@ function ByggMenySida()
             //visa felsidan
             ByggFelSida(namn);
         }
-    }
+    })
 }
 
 function ByggFelSida(namn)
 {
+    // används för att förkorta kod-raderna: 
+    var kodText;    
+    var taggInUse; 
+
     // ta bort ev tidigare utskrift
-    taggInUse = document.getElementById("helaSidan");
+    taggInUse = document.getElementById("wrap");
     taggInUse.innerHTML = "";
-
-    // start-tagg som kopplas till första taggen i html-dokumentet
-    kodText = "<div id='wrap'></div>";
-    taggInUse = document.getElementById("helaSidan");
+    
+    // rubrik och felsida inne i wrapen
+    taggInUse = document.getElementById("wrap");
+    kodText = "<h2>Felaktigt id/lösen</h2>";
+    kodText = kodText + "<div id='felsida'></div>";
     taggInUse.insertAdjacentHTML("beforeend",kodText);
 
-    // min rubrikrad
-    kodText = "<h2 id='rubrik'>Det blev fel</h2>";
-    taggInUse = document.getElementById("wrap");
-    taggInUse.insertAdjacentHTML("beforeend",kodText);
-
-    // min detaljrad
-    kodText = "<div id='divFelId'>Användarid och/eller password är felaktigt</div>";
-    taggInUse = document.getElementById("wrap");
+    // detaljrad som ska ligga på felsidan
+    taggInUse = document.getElementById("felsida");
+    kodText = "<div id='detaljrad'></div>";
     taggInUse.insertAdjacentHTML("beforeend",kodText);
     
-    // namn-tagg
-    kodText = "<div id='namnFelId'>Du angav användarid </div>";
-    taggInUse = document.getElementById("divFelId");
+    // utdata och tillbaka-button
+    taggInUse = document.getElementById("detaljrad");
+    kodText = "Du angav användarid " + namn;
+    kodText = kodText + "<button id='tillb'> Tillbaka  </button>";
     taggInUse.insertAdjacentHTML("beforeend", kodText);
-
-    taggInUse = document.getElementById("namnFelId");
-    taggInUse.insertAdjacentHTML("beforeend", namn);
-
-    // tillbaka-knappen
-    kodText = "<button id='btnTillbaka'> Tillbaka till inloggning </button>";
-    taggInUse = document.getElementById("wrap");
-    taggInUse.insertAdjacentHTML("beforeend", kodText);
-
-    // variabler som fångar upp val från skärmen
-    var variabelTillbaka = document.getElementById("btnTillbaka");
-
-    // händelsehantering: klickat tillbaka-knappen
-    var variabelTillbaka = document.getElementById("btnTillbaka");
 
     // event-handler: tillbaka till menyn
-    variabelTillbaka.addEventListener("click", function()
+    var eventTillbaka = document.getElementById("tillb");
+    eventTillbaka.addEventListener("click", function()
     {  
         ByggMenySida();
     })
@@ -136,46 +107,29 @@ function ByggFelSida(namn)
 
 function ByggInloggadSida(namn)
 {
+    // används för att förkorta kod-raderna: 
+    var kodText;    
+    var taggInUse; 
+
     // ta bort ev tidigare utskrift
-    taggInUse = document.getElementById("helaSidan");
+    taggInUse = document.getElementById("wrap");
     taggInUse.innerHTML = "";
 
-    // start-tagg som kopplas till första taggen i html-dokumentet
-    kodText = "<div id='wrap'></div>";
-    taggInUse = document.getElementById("helaSidan");
-    taggInUse.insertAdjacentHTML("beforeend",kodText);
-
-    // min rubrikrad
+    // rubrikrad och detaljrad inne i wrapen
+    taggInUse = document.getElementById("wrap");
     kodText = "<h2 id='rubrik'>Välkommen in</h2>";
-    taggInUse = document.getElementById("wrap");
+    kodText = kodText + "<div id='visasida'></div>";
     taggInUse.insertAdjacentHTML("beforeend",kodText);
 
-    // min detaljrad
-    kodText = "<div id='divLoggaUtId'></div>";
-    taggInUse = document.getElementById("wrap");
-    taggInUse.insertAdjacentHTML("beforeend",kodText);
-    
-    // namn-tagg
-    kodText = "<div id='namnId'>Du är inloggad som </div>";
-    taggInUse = document.getElementById("divLoggaUtId");
+    // namn och logga ut-button på detaljraden
+    taggInUse = document.getElementById("visasida");
+    kodText = "du är inloggad som " + namn;
+    kodText = kodText + "<button id='btnLoggaUt'> Logga ut </button>";
     taggInUse.insertAdjacentHTML("beforeend", kodText);
-
-    taggInUse = document.getElementById("namnId");
-    taggInUse.insertAdjacentHTML("beforeend", namn);
-
-    // utloggningsknappen
-    kodText = "<button id='btnLoggaUt'> Logga ut </button>";
-    taggInUse = document.getElementById("wrap");
-    taggInUse.insertAdjacentHTML("beforeend", kodText);
-
-    // variabler som fångar upp val från skärmen
-    var variabelLoggaUt = document.getElementById("btnLoggaUt");
-
-    // händelsehantering: klickat logga ut-knappen
-    var variabelLoggaUt = document.getElementById("btnLoggaUt");
 
     // event-handler: logga ut
-    variabelLoggaUt.addEventListener("click", function()
+    var eventLoggaUt = document.getElementById("btnLoggaUt");
+    eventLoggaUt.addEventListener("click", function()
     {  
         // tömmer local storage på detta programs data
         localStorage.removeItem("MVP_Inloggning_namn");
